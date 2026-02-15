@@ -1,0 +1,141 @@
+cuda:1
+train image number:1624
+iter [101/10000], loss:0.2663
+iter [202/10000], loss:0.1118
+iter [303/10000], loss:0.0906
+iter [404/10000], loss:0.0858
+iter [505/10000], loss:0.0762
+iter [606/10000], loss:0.0745
+iter [707/10000], loss:0.0710
+iter [808/10000], loss:0.0683
+iter [909/10000], loss:0.0670
+iter [1010/10000], loss:0.0664
+iter [1111/10000], loss:0.0711
+iter [1212/10000], loss:0.0667
+iter [1313/10000], loss:0.0631
+iter [1414/10000], loss:0.0622
+iter [1515/10000], loss:0.0606
+iter [1616/10000], loss:0.0600
+iter [1717/10000], loss:0.0598
+iter [1818/10000], loss:0.0588
+iter [1919/10000], loss:0.0583
+iter [2020/10000], loss:0.0582
+iter [2121/10000], loss:0.0582
+iter [2222/10000], loss:0.0569
+iter [2323/10000], loss:0.0569
+iter [2424/10000], loss:0.0561
+iter [2525/10000], loss:0.0557
+iter [2626/10000], loss:0.0551
+iter [2727/10000], loss:0.0547
+iter [2828/10000], loss:0.0543
+iter [2929/10000], loss:0.0542
+iter [3030/10000], loss:0.0537
+iter [3131/10000], loss:0.0534
+iter [3232/10000], loss:0.0532
+iter [3333/10000], loss:0.0531
+iter [3434/10000], loss:0.0528
+iter [3535/10000], loss:0.0525
+iter [3636/10000], loss:0.0523
+iter [3737/10000], loss:0.0520
+iter [3838/10000], loss:0.0518
+iter [3939/10000], loss:0.0517
+iter [4040/10000], loss:0.0516
+iter [4141/10000], loss:0.0512
+iter [4242/10000], loss:0.0509
+iter [4343/10000], loss:0.0509
+iter [4444/10000], loss:0.0510
+iter [4545/10000], loss:0.0506
+iter [4646/10000], loss:0.0503
+iter [4747/10000], loss:0.0502
+iter [4848/10000], loss:0.0500
+iter [4949/10000], loss:0.0498
+carpet: I-Auroc:0.9988, I-AP:0.9996, I-F1:0.9944, P-AUROC:0.9950, P-AP:0.7951, P-F1:0.7574, P-AUPRO:0.9823
+grid: I-Auroc:0.9741, I-AP:0.9913, I-F1:0.9655, P-AUROC:0.9836, P-AP:0.3113, P-F1:0.4432, P-AUPRO:0.9339
+leather: I-Auroc:1.0000, I-AP:1.0000, I-F1:1.0000, P-AUROC:0.9918, P-AP:0.5178, P-F1:0.5095, P-AUPRO:0.9625
+tile: I-Auroc:0.9282, I-AP:0.9740, I-F1:0.9123, P-AUROC:0.9510, P-AP:0.6919, P-F1:0.6668, P-AUPRO:0.7964
+wood: I-Auroc:0.9711, I-AP:0.9908, I-F1:0.9573, P-AUROC:0.9639, P-AP:0.6663, P-F1:0.6361, P-AUPRO:0.8763
+bottle: I-Auroc:1.0000, I-AP:1.0000, I-F1:1.0000, P-AUROC:0.9875, P-AP:0.8608, P-F1:0.8181, P-AUPRO:0.9607
+cable: I-Auroc:0.8117, I-AP:0.9179, I-F1:0.8519, P-AUROC:0.9086, P-AP:0.4018, P-F1:0.4593, P-AUPRO:0.7669
+capsule: I-Auroc:0.9234, I-AP:0.9822, I-F1:0.9422, P-AUROC:0.9822, P-AP:0.5063, P-F1:0.5125, P-AUPRO:0.9639
+hazelnut: I-Auroc:0.6329, I-AP:0.8215, I-F1:0.7778, P-AUROC:0.9661, P-AP:0.4728, P-F1:0.4451, P-AUPRO:0.8739
+metal_nut: I-Auroc:0.9897, I-AP:0.9977, I-F1:0.9735, P-AUROC:0.9430, P-AP:0.7254, P-F1:0.7426, P-AUPRO:0.9095
+pill: I-Auroc:0.9520, I-AP:0.9913, I-F1:0.9527, P-AUROC:0.9671, P-AP:0.7043, P-F1:0.6729, P-AUPRO:0.9625
+screw: I-Auroc:0.8252, I-AP:0.9435, I-F1:0.8571, P-AUROC:0.9913, P-AP:0.4405, P-F1:0.4801, P-AUPRO:0.9680
+toothbrush: I-Auroc:0.9056, I-AP:0.9696, I-F1:0.9091, P-AUROC:0.9841, P-AP:0.5567, P-F1:0.6040, P-AUPRO:0.9367
+transistor: I-Auroc:0.9113, I-AP:0.8802, I-F1:0.7959, P-AUROC:0.8225, P-AP:0.3527, P-F1:0.3738, P-AUPRO:0.6335
+zipper: I-Auroc:0.9995, I-AP:0.9999, I-F1:0.9958, P-AUROC:0.9842, P-AP:0.7178, P-F1:0.6925, P-AUPRO:0.9507
+Mean: I-Auroc:0.9216, I-AP:0.9640, I-F1:0.9257, P-AUROC:0.9615, P-AP:0.5814, P-F1:0.5876, P-AUPRO:0.8985
+iter [5050/10000], loss:0.0496
+iter [5151/10000], loss:0.0495
+iter [5252/10000], loss:0.0493
+iter [5353/10000], loss:0.0491
+iter [5454/10000], loss:0.0490
+iter [5555/10000], loss:0.0489
+iter [5656/10000], loss:0.0487
+iter [5757/10000], loss:0.0486
+iter [5858/10000], loss:0.0484
+iter [5959/10000], loss:0.0483
+iter [6060/10000], loss:0.0482
+iter [6161/10000], loss:0.0481
+iter [6262/10000], loss:0.0480
+iter [6363/10000], loss:0.0479
+iter [6464/10000], loss:0.0478
+iter [6565/10000], loss:0.0477
+iter [6666/10000], loss:0.0476
+iter [6767/10000], loss:0.0475
+iter [6868/10000], loss:0.0474
+iter [6969/10000], loss:0.0473
+iter [7070/10000], loss:0.0472
+iter [7171/10000], loss:0.0471
+iter [7272/10000], loss:0.0471
+iter [7373/10000], loss:0.0470
+iter [7474/10000], loss:0.0469
+iter [7575/10000], loss:0.0468
+iter [7676/10000], loss:0.0467
+iter [7777/10000], loss:0.0467
+iter [7878/10000], loss:0.0466
+iter [7979/10000], loss:0.0466
+iter [8080/10000], loss:0.0465
+iter [8181/10000], loss:0.0464
+iter [8282/10000], loss:0.0464
+iter [8383/10000], loss:0.0464
+iter [8484/10000], loss:0.0463
+iter [8585/10000], loss:0.0462
+iter [8686/10000], loss:0.0462
+iter [8787/10000], loss:0.0462
+iter [8888/10000], loss:0.0461
+iter [8989/10000], loss:0.0461
+iter [9090/10000], loss:0.0461
+iter [9191/10000], loss:0.0460
+iter [9292/10000], loss:0.0460
+iter [9393/10000], loss:0.0460
+iter [9494/10000], loss:0.0459
+iter [9595/10000], loss:0.0459
+iter [9696/10000], loss:0.0459
+iter [9797/10000], loss:0.0458
+iter [9898/10000], loss:0.0458
+iter [9999/10000], loss:0.0458
+carpet: I-Auroc:0.9988, I-AP:0.9996, I-F1:0.9944, P-AUROC:0.9950, P-AP:0.7846, P-F1:0.7547, P-AUPRO:0.9832
+grid: I-Auroc:0.9799, I-AP:0.9934, I-F1:0.9739, P-AUROC:0.9848, P-AP:0.3219, P-F1:0.4539, P-AUPRO:0.9374
+leather: I-Auroc:1.0000, I-AP:1.0000, I-F1:1.0000, P-AUROC:0.9926, P-AP:0.5373, P-F1:0.5235, P-AUPRO:0.9672
+tile: I-Auroc:0.8066, I-AP:0.9364, I-F1:0.8414, P-AUROC:0.9370, P-AP:0.6752, P-F1:0.6738, P-AUPRO:0.7660
+wood: I-Auroc:0.9754, I-AP:0.9923, I-F1:0.9580, P-AUROC:0.9661, P-AP:0.6789, P-F1:0.6466, P-AUPRO:0.8936
+bottle: I-Auroc:1.0000, I-AP:1.0000, I-F1:1.0000, P-AUROC:0.9883, P-AP:0.8675, P-F1:0.8221, P-AUPRO:0.9607
+cable: I-Auroc:0.7635, I-AP:0.8992, I-F1:0.8428, P-AUROC:0.9035, P-AP:0.4007, P-F1:0.4666, P-AUPRO:0.7065
+capsule: I-Auroc:0.8991, I-AP:0.9775, I-F1:0.9237, P-AUROC:0.9805, P-AP:0.4958, P-F1:0.4996, P-AUPRO:0.9572
+hazelnut: I-Auroc:0.4707, I-AP:0.7581, I-F1:0.7778, P-AUROC:0.9441, P-AP:0.4057, P-F1:0.4340, P-AUPRO:0.7916
+metal_nut: I-Auroc:0.9971, I-AP:0.9993, I-F1:0.9946, P-AUROC:0.9515, P-AP:0.7515, P-F1:0.7796, P-AUPRO:0.9261
+pill: I-Auroc:0.9577, I-AP:0.9922, I-F1:0.9606, P-AUROC:0.9692, P-AP:0.7035, P-F1:0.6758, P-AUPRO:0.9654
+screw: I-Auroc:0.7563, I-AP:0.9256, I-F1:0.8530, P-AUROC:0.9891, P-AP:0.4259, P-F1:0.4817, P-AUPRO:0.9619
+toothbrush: I-Auroc:0.8444, I-AP:0.9504, I-F1:0.8889, P-AUROC:0.9779, P-AP:0.5321, P-F1:0.5982, P-AUPRO:0.9163
+transistor: I-Auroc:0.9183, I-AP:0.8886, I-F1:0.8193, P-AUROC:0.8304, P-AP:0.3779, P-F1:0.3905, P-AUPRO:0.6392
+zipper: I-Auroc:0.9992, I-AP:0.9998, I-F1:0.9917, P-AUROC:0.9854, P-AP:0.7348, P-F1:0.7048, P-AUPRO:0.9552
+Mean: I-Auroc:0.8911, I-AP:0.9542, I-F1:0.9213, P-AUROC:0.9597, P-AP:0.5796, P-F1:0.5937, P-AUPRO:0.8885
+iter [10000/10000], loss:0.0470
+I-AUROC      89.11
+I-AP         95.42
+I-F1         92.13
+P-AUROC      95.97
+P-AP         57.96
+P-F1         59.37
+P-AUPRO      88.85

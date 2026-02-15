@@ -1,0 +1,3 @@
+backbones/
+*.pth
+__pycache__/
