@@ -1,0 +1,4 @@
+backbones/
+*.pth
+__pycache__/
+saved_results/
