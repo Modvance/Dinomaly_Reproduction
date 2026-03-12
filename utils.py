@@ -672,6 +672,7 @@ def compute_pro(masks: ndarray, amaps: ndarray, num_th: int = 200) -> None:
     max_th = amaps.max()
     delta = (max_th - min_th) / num_th
 
+    rows = []
     for th in np.arange(min_th, max_th, delta):
         binary_amaps[amaps <= th] = 0
         binary_amaps[amaps > th] = 1
@@ -688,7 +689,10 @@ def compute_pro(masks: ndarray, amaps: ndarray, num_th: int = 200) -> None:
         fp_pixels = np.logical_and(inverse_masks, binary_amaps).sum()
         fpr = fp_pixels / inverse_masks.sum()
 
-        df = df.append({"pro": mean(pros), "fpr": fpr, "threshold": th}, ignore_index=True)
+        rows.append({"pro": mean(pros), "fpr": fpr, "threshold": th})
+
+    if rows:
+        df = pd.concat([df, pd.DataFrame(rows)], ignore_index=True)
 
     # Normalize FPR from 0 ~ 1 to 0 ~ 0.3
     df = df[df["fpr"] < 0.3]

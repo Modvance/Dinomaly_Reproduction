@@ -1,0 +1,43 @@
+## DINOv3 native-token experiment environment (recommended: Python>=3.10)
+##
+## This file is a modernized copy of `requirements.txt` so you can create a new
+## conda/venv without breaking your original Dinomaly (DINOv2) reproduction env.
+##
+## Suggested conda command:
+##   conda create -n dinov3_dinomaly python=3.10 -y
+##
+## Notes:
+## - DINOv3 official code requires Python 3.10+ (uses `X | None` type hints).
+## - Prefer installing torch/torchvision from the official PyTorch index for your CUDA version.
+
+matplotlib>=3.8
+numpy>=1.26
+opencv-python-headless>=4.9
+pandas>=2.2
+Pillow>=10.2
+scikit-image>=0.22
+scikit-learn>=1.4
+scipy>=1.11
+tabulate>=0.9
+tqdm>=4.66
+ptflops>=0.7
+
+# required by optimizers/ACProp.py
+colorama>=0.4
+
+# DINOv3 + timm
+timm>=1.0.20
+huggingface_hub>=0.23
+torchmetrics>=1.3
+
+# DINOv3 official repo (torch.hub) extra deps
+termcolor>=2.4
+omegaconf>=2.3
+submitit>=1.5
+ftfy>=6.2
+regex>=2024.5
+iopath>=0.1.10
+
+# PyTorch (install via appropriate CUDA index-url if needed)
+torch>=2.2
+torchvision>=0.17
