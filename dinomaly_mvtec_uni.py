@@ -17,6 +17,7 @@ from torchvision.datasets import ImageFolder
 import numpy as np
 import random
 import os
+import sys
 from torch.utils.data import DataLoader, ConcatDataset
 
 from models.uad import ViTill, ViTillv2
@@ -39,6 +40,14 @@ import logging
 from sklearn.metrics import roc_auc_score, average_precision_score
 import itertools
 import time
+
+# 引入 TailedCore 的类别基数估计工具
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+TAILEDCORE_ROOT = os.path.join(PROJECT_ROOT, '..', 'TailedCore')
+if TAILEDCORE_ROOT not in sys.path:
+    sys.path.append(TAILEDCORE_ROOT)
+
+from src import class_size
 
 warnings.filterwarnings("ignore")
 
@@ -202,8 +211,16 @@ def train(item_list, run_args=None, device=None, gpu_ids=None):
         decoder.append(blk)
     decoder = nn.ModuleList(decoder)
 
-    model = ViTill(encoder=encoder, bottleneck=bottleneck, decoder=decoder, target_layers=target_layers,
-                   mask_neighbor_size=0, fuse_layer_encoder=fuse_layer_encoder, fuse_layer_decoder=fuse_layer_decoder)
+    model = ViTill(
+        encoder=encoder,
+        bottleneck=bottleneck,
+        decoder=decoder,
+        target_layers=target_layers,
+        fuse_layer_encoder=fuse_layer_encoder,
+        fuse_layer_decoder=fuse_layer_decoder,
+        mask_neighbor_size=0,
+        return_global_embeddings=True,
+    )
     model = model.to(device)
     if len(gpu_ids) > 1:
         model = nn.DataParallel(model, device_ids=gpu_ids)
@@ -246,8 +263,58 @@ def train(item_list, run_args=None, device=None, gpu_ids=None):
             label = label.to(device)
 
             optimizer.zero_grad()
+            # 1) 先通过冻结的 ViT 编码器，提取每个样本的全局嵌入，用于 Tail 类别基数估计
+            with torch.no_grad():
+                if isinstance(model, nn.DataParallel):
+                    global_emb = model.module.extract_global_embeddings(img)
+                else:
+                    global_emb = model.extract_global_embeddings(img)
+
+                class_sizes = class_size.sample_few_shot(
+                    X=global_emb.detach(),
+                    th_type='symmin',
+                    vote_type='mean',
+                    return_class_sizes=True,
+                )
+                num_samples_per_class = class_size.predict_num_samples_per_class(class_sizes)
+                K_max = class_size.predict_max_K(num_samples_per_class, percentile=0.15)
+
+                # 将 κ_i → 动态 Dropout 丢弃率 p_i
+                kappa = class_sizes.to(global_emb.device)
+                kappa_clamped = torch.clamp(kappa, min=float(K_max))
+                kappa_max = kappa_clamped.max()
+                if kappa_max <= K_max:
+                    t = torch.zeros_like(kappa_clamped)
+                else:
+                    t = (kappa_clamped - float(K_max)) / (kappa_max - float(K_max))
+                p_tail, p_head = 0.05, 0.5
+                dropout_rates = p_tail + t * (p_head - p_tail)
+
+                # 噪声样本：极小 κ_i 视为噪声，直接全掩码（p_i = 1.0）
+                noise_threshold = max(1e-6, 0.5 * float(K_max))
+                is_noise = kappa < noise_threshold
+                dropout_rates = torch.where(is_noise, torch.ones_like(dropout_rates), dropout_rates)
+
+                if it % 100 == 0:
+                    try:
+                        kappa_min = class_sizes.min().item()
+                        kappa_max_val = class_sizes.max().item()
+                        kappa_mean = class_sizes.mean().item()
+                        p_min = dropout_rates.min().item()
+                        p_max = dropout_rates.max().item()
+                        p_mean = dropout_rates.mean().item()
+                        print_fn(
+                            f"kappa stats: min={kappa_min:.2f}, max={kappa_max_val:.2f}, "
+                            f"mean={kappa_mean:.2f}, K_max={float(K_max):.2f}; "
+                            f"p_i: min={p_min:.2f}, max={p_max:.2f}, mean={p_mean:.2f}"
+                        )
+                    except Exception as e:
+                        print_fn(f"Failed to compute kappa / p_i stats: {e}")
+
+            # 2) 使用自适应噪声瓶颈进行重建训练
             with torch.cuda.amp.autocast(enabled=use_amp):
-                en, de = model(img)
+                en, de, _ = model(img, dropout_rates=dropout_rates)
+
                 if loss_type == 'loose':
                     p_final = 0.9
                     p = min(p_final * it / 1000, p_final)

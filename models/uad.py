@@ -19,6 +19,7 @@ class ViTill(nn.Module):
             mask_neighbor_size=0,
             remove_class_token=False,
             encoder_require_grad_layer=[],
+            return_global_embeddings: bool = False,
     ) -> None:
         super(ViTill, self).__init__()
         self.encoder = encoder
@@ -29,12 +30,13 @@ class ViTill(nn.Module):
         self.fuse_layer_decoder = fuse_layer_decoder
         self.remove_class_token = remove_class_token
         self.encoder_require_grad_layer = encoder_require_grad_layer
+        self.return_global_embeddings = return_global_embeddings
 
         if not hasattr(self.encoder, 'num_register_tokens'):
             self.encoder.num_register_tokens = 0
         self.mask_neighbor_size = mask_neighbor_size
 
-    def forward(self, x):
+    def _encode(self, x):
         if hasattr(self.encoder, 'get_multi_scale_features'):
             en_list = self.encoder.get_multi_scale_features(x)
             side = int(math.sqrt(en_list[0].shape[1] - 1 - self.encoder.num_register_tokens))
@@ -53,11 +55,39 @@ class ViTill(nn.Module):
                 if i in self.target_layers:
                     en_list.append(x)
             side = int(math.sqrt(en_list[0].shape[1] - 1 - self.encoder.num_register_tokens))
+        return en_list, side
+
+    def extract_global_embeddings(self, x):
+        """仅通过编码器前向，返回每个样本的 CLS 全局嵌入。"""
+        en_list, _ = self._encode(x)
+        last_layer_tokens = en_list[-1]
+        cls_tokens = last_layer_tokens[:, 0, :]
+        return cls_tokens
+
+    def _apply_adaptive_dropout(self, x, dropout_rates=None):
+        """根据每个样本的丢弃率，对瓶颈输入做自适应 Dropout。"""
+        if (dropout_rates is None) or (not self.training):
+            return x
+        b, n, c = x.shape
+        dropout_rates = dropout_rates.view(b, 1, 1).to(x.device)
+        keep_prob = (1.0 - dropout_rates).clamp(min=1e-6)
+        random_tensor = torch.rand_like(x)
+        binary_mask = (random_tensor > dropout_rates).float()
+        x = x * binary_mask / keep_prob
+        return x
+
+    def forward(self, x, dropout_rates=None):
+        en_list, side = self._encode(x)
+
+        # 使用最后一层的 CLS token 作为全局嵌入向量 e_i
+        last_layer_tokens = en_list[-1]
+        cls_tokens = last_layer_tokens[:, 0, :]
 
         if self.remove_class_token:
             en_list = [e[:, 1 + self.encoder.num_register_tokens:, :] for e in en_list]
 
         x = self.fuse_feature(en_list)
+        x = self._apply_adaptive_dropout(x, dropout_rates=dropout_rates)
         for i, blk in enumerate(self.bottleneck):
             x = blk(x)
 
@@ -81,6 +111,8 @@ class ViTill(nn.Module):
 
         en = [e.permute(0, 2, 1).reshape([x.shape[0], -1, side, side]).contiguous() for e in en]
         de = [d.permute(0, 2, 1).reshape([x.shape[0], -1, side, side]).contiguous() for d in de]
+        if self.return_global_embeddings:
+            return en, de, cls_tokens
         return en, de
 
     def fuse_feature(self, feat_list):
